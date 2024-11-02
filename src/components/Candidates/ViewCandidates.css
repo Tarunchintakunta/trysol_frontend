@@ -1,0 +1,174 @@
+.search-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 50px !important;
+  }
+  
+  /* Filters section */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    justify-content: space-between;
+  }
+  
+  .filters input {
+    padding: 10px;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 180px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .filters input::placeholder {
+    color: #999;
+  }
+  
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  table, th, td {
+    border: 1px solid #e0e0e0;
+  }
+  
+  th {
+    background-color: #f7f7f7;
+    color: #333;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  td {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  
+  /* Pagination styles */
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .pagination button {
+    padding: 6px 15px;
+    font-size: 0.9rem;
+    color: #333;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+  }
+  
+  .pagination button:hover {
+    background-color: #bbb;
+    transform: translateY(-2px);
+  }
+  
+  .pagination button:disabled {
+    background-color: #f1f1f1;
+    cursor: not-allowed;
+    color: #999;
+  }
+  
+  /* Mass Mailing and Download buttons */
+  .mass-mailing-button,
+  .download-button {
+    padding: 10px 20px;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin: 10px 5px;
+  }
+  
+  .mass-mailing-button:hover,
+  .download-button:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 10px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .filters {
+        justify-content: center;
+    }
+  
+    .filters input {
+        max-width: 100%;
+        margin-right: 0;
+    }
+  
+    table, th, td {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+  
+    .pagination {
+        flex-direction: column;
+    }
+  
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+  
+    .mass-mailing-button,
+    .download-button {
+        width: 80%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .search-container {
+      padding: 10px;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    .filters input {
+      padding: 8px;
+      font-size: 0.8rem;
+    }
+  
+    .pagination button {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+  
+    .mass-mailing-button,
+    .download-button {
+      padding: 8px 15px;
+      font-size: 0.8rem;
+    }
+  }
