@@ -1,7 +1,8 @@
 // src/pages/Upload.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Form, Alert, Container } from 'react-bootstrap';
+import { Button, Form, Alert, Container,Spinner } from 'react-bootstrap';
+
 
 const UploadCandidates = () => {
   const [files, setFiles] = useState([]);
@@ -9,7 +10,7 @@ const UploadCandidates = () => {
   const [variant, setVariant] = useState('danger'); // To handle the color of the alert
   const [duplicates, setDuplicates] = useState([]); // State to hold duplicates
   const [totalDuplicatesSkipped, setTotalDuplicatesSkipped] = useState(0); // State for total duplicates skipped
-
+  const [loading,setLoading] = useState(false);
   // Handle file selection
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -48,6 +49,7 @@ const UploadCandidates = () => {
       formData.append('files', file);
     });
   
+    setLoading(true);
     try {
       const response = await axios.post('http://localhost:8080/trysol/candidates/upload', formData, {
         headers: {
@@ -68,9 +70,11 @@ const UploadCandidates = () => {
         setDuplicates([]);
         setTotalDuplicatesSkipped(0);
       }
+      setLoading(false);
     } catch (error) {
       setMessage('Failed to upload files: ' + (error.response?.data?.message || error.message));
       setVariant('danger');
+      setLoading(false)
       console.error(error);
     }
   };
@@ -89,9 +93,19 @@ const UploadCandidates = () => {
             multiple 
           />
         </Form.Group>
-        <Button variant="success" type="submit">
-          Upload
-        </Button>
+        <Button 
+          variant="success" 
+          type="submit" 
+          disabled={loading}
+          style={loading ? { cursor: 'not-allowed' } : {}}
+        >
+          {loading ? (
+            <>
+              <Spinner animation="border" role="status" size="sm" className="me-2" />
+              Uploading..
+            </>
+          ) : "Upload"} 
+        </Button>
       </Form>
       {message && <Alert variant={variant} className="mt-3">{message}</Alert>}
       {totalDuplicatesSkipped > 0 && (

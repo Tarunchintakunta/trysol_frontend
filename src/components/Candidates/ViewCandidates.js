@@ -6,7 +6,7 @@ import './ViewCandidates.css';
 const ViewCandidates = () => {
   const [data, setData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [filters, setFilters] = useState({
     name: '',
@@ -45,25 +45,6 @@ const ViewCandidates = () => {
     }
   };
 
-  // Update URL with search parameters
-  useEffect(() => {
-    // Create a params object with only non-empty values
-    const params = {
-      page,
-      size: pageSize,
-      ...Object.fromEntries(
-        Object.entries(filters).filter(([_, value]) => value !== "")
-      ),
-    };
-
-    // Generate the query string without empty parameters
-    const query = new URLSearchParams(params).toString();
-
-    if (data.length > 0) {
-      window.history.replaceState({}, '', `?${query}`);
-    }
-  }, [page, pageSize, filters, data]);
-
   useEffect(() => {
     fetchData();
   }, [page, pageSize, filters]);
@@ -73,7 +54,7 @@ const ViewCandidates = () => {
       ...filters,
       [e.target.name]: e.target.value,
     });
-    setPage(1); // Reset to page 1 when filters change
+    setPage(0); // Reset to page 1 when filters change
   };
 
   const handleCheckboxChange = (email) => {
@@ -86,7 +67,7 @@ const ViewCandidates = () => {
 
   const handleMassMailing = () => {
     if (selectedEmails.length > 0) {
-      const mailtoLink = `mailto:?to=${selectedEmails.join(',')}`;
+      const mailtoLink = `mailto:?bcc=${selectedEmails.join(',')}`;
       window.location.href = mailtoLink;
     } else {
       alert("Please select at least one candidate to email.");
@@ -113,6 +94,7 @@ const ViewCandidates = () => {
       Location: candidate.location,
       TotalExperience: candidate.totalExperience,
       RelevantExperience: candidate.relevantExperience,
+      NoticePeriod: candidate.noticePeriod,
     }));
   
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
@@ -128,6 +110,7 @@ const ViewCandidates = () => {
       { header: "Location", minWidth: 20 },
       { header: "TotalExperience", minWidth: 15 },
       { header: "RelevantExperience", minWidth: 15 },
+      { header: "Notice Period", minWidth: 15 },
     ];
   
     worksheet['!cols'] = columnHeaders.map((col) => {
@@ -152,7 +135,7 @@ const ViewCandidates = () => {
       minRelExp: '',
       maxRelExp: '',
     });
-    setPage(1); // Reset to page 1
+    setPage(0); // Reset to page 1
     setSelectedEmails([]); // Clear selected emails
   };
 
@@ -186,6 +169,7 @@ const ViewCandidates = () => {
             <th>Location</th>
             <th>Total Exp</th>
             <th>Rel Exp</th>
+            <th>Notice period</th>
           </tr>
         </thead>
         <tbody>
@@ -207,17 +191,18 @@ const ViewCandidates = () => {
               <td>{candidate.location}</td>
               <td>{candidate.totalExperience}</td>
               <td>{candidate.relevantExperience}</td>
+              <td>{candidate.noticePeriod}</td>
             </tr>
           ))}
         </tbody>
       </table>
 
       <div className="pagination">
-        <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        <button onClick={() => setPage(page - 1)} disabled={page === 0}>
           Previous
         </button>
-        <span>Page {page}</span>
-        <button onClick={() => setPage(page + 1)} disabled={page * pageSize >= totalRecords}>
+        <span>Page {page + 1}</span>
+        <button onClick={() => setPage(page + 1)} disabled={(page + 1) * pageSize >= totalRecords}>
           Next
         </button>
       </div>

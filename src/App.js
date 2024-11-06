@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
 import ViewCandidates from './components/Candidates/ViewCandidates';
 import UploadCandidates from './components/Candidates/UploadCandidates';
 import Profile from './components/Profile/Profile';
@@ -15,6 +15,7 @@ const App = () => {
 
   return (
     <>
+    <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
         
@@ -23,9 +24,9 @@ const App = () => {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/view-candidates" element={<ViewCandidates />} />
             <Route path="/admin/upload-candidates" element={<UploadCandidates />} />
-            <Route path="/admin/profile" element={<Profile />} />
+            {/* <Route path="/admin/profile" element={<Profile />} /> */}
             <Route path="/admin/candidates-audit" element={<CandidatesAudit />} />
-            <Route path="/admin/create-employee" element={<CreateEmployee />} />
+            {/* <Route path="/admin/create-employee" element={<CreateEmployee />} /> */}
             <Route path="/admin/view-employees" element={<ViewEmployee />} />
           </>
         )}
@@ -35,13 +36,14 @@ const App = () => {
             <Route path="/user/dashboard" element={<UserDashboard />} />
             <Route path="/user/view-candidates" element={<ViewCandidates />} />
             <Route path="/user/upload-candidates" element={<UploadCandidates />} />
-            <Route path="/user/profile" element={<Profile />} />
+            {/* <Route path="/user/profile" element={<Profile />} /> */}
           </>
         )}
 
         {/* Redirect to login for any other paths */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
+      </BrowserRouter>
     </>
   );
 };
