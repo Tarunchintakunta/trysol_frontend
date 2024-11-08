@@ -67,7 +67,7 @@ const ViewCandidates = () => {
 
   const handleMassMailing = () => {
     if (selectedEmails.length > 0) {
-      const mailtoLink = `mailto:?bcc=${selectedEmails.join(',')}`;
+      const mailtoLink = `mailto:?bcc=${selectedEmails.join(',')}`; // Change cc to bcc
       window.location.href = mailtoLink;
     } else {
       alert("Please select at least one candidate to email.");
@@ -139,6 +139,14 @@ const ViewCandidates = () => {
     setSelectedEmails([]); // Clear selected emails
   };
 
+  const calculateRemainingDays = (noticeDate) => {
+    const today = new Date();
+    const noticeDateObj = new Date(noticeDate.split("-").reverse().join("-")); // assuming format is DD-MM-YYYY
+    const diffTime = noticeDateObj - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? `${diffDays} days remaining` : "Notice period ended";
+  };
+
   return (
     <div className="search-container">
       <h2>Search Candidates</h2>
@@ -170,6 +178,7 @@ const ViewCandidates = () => {
             <th>Total Exp</th>
             <th>Rel Exp</th>
             <th>Notice period</th>
+            <th>Remaining Days</th>
           </tr>
         </thead>
         <tbody>
@@ -192,6 +201,7 @@ const ViewCandidates = () => {
               <td>{candidate.totalExperience}</td>
               <td>{candidate.relevantExperience}</td>
               <td>{candidate.noticePeriod}</td>
+              <td>{calculateRemainingDays(candidate.noticePeriod)}</td>
             </tr>
           ))}
         </tbody>
@@ -207,12 +217,14 @@ const ViewCandidates = () => {
         </button>
       </div>
 
-      <button onClick={handleMassMailing} className="mass-mailing-button">
-        Mass Mailing
-      </button>
-      <button onClick={handleDownload} className="download-button">
-        Download
-      </button>
+      <div className="button-container">
+        <button onClick={handleMassMailing} className="mass-mailing-button">
+          Mass Mailing
+        </button>
+        <button onClick={handleDownload} className="download-button">
+          Download
+        </button>
+      </div>
     </div>
   );
 };
