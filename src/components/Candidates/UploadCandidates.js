@@ -51,7 +51,7 @@ const UploadCandidates = () => {
   
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:8080/trysol/candidates/upload', formData, {
+      const response = await axios.post( `${process.env.REACT_APP_API_URL}/trysol/candidates/upload`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
