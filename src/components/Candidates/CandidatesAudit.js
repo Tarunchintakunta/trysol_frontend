@@ -16,7 +16,7 @@ const AuditTable = () => {
 
   const fetchAudits = async (page, size, order) => {
     try {
-      const response = await axios.get( `${process.env.REACT_APP_API_URL}/trysol/candidates/audits?page=${page}&size=${size}&sortBy=uploadDateTime&direction=${order}`, {
+      const response = await axios.get( "http://13.53.126.195:8080/trysol/candidates/audits?page=${page}&size=${size}&sortBy=uploadDateTime&direction=${order}", {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem("token")}`
         }

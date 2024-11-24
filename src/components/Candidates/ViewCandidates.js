@@ -31,7 +31,7 @@ const ViewCandidates = () => {
         ),
       };
 
-      const response = await axios.get( `${process.env.REACT_APP_API_URL}/trysol/candidates`, { 
+      const response = await axios.get( "http://13.53.126.195:8080/trysol/candidates", { 
         params,
         headers: {
           Authorization: `Bearer ${token}`,

@@ -3,7 +3,7 @@ import axios from "axios";
 export const login = async (email, password) => {
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/trysol/auth/login`,
+      "http://13.53.126.195:8080/trysol/auth/login",
       {
         email: email,
         password: password,

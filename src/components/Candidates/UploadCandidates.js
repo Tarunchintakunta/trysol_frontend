@@ -1,33 +1,34 @@
 // src/pages/Upload.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Button, Form, Alert, Container,Spinner } from 'react-bootstrap';
-
+import React, { useState } from "react";
+import axios from "axios";
+import { Button, Form, Alert, Container, Spinner } from "react-bootstrap";
 
 const UploadCandidates = () => {
   const [files, setFiles] = useState([]);
-  const [message, setMessage] = useState('');
-  const [variant, setVariant] = useState('danger'); // To handle the color of the alert
+  const [message, setMessage] = useState("");
+  const [variant, setVariant] = useState("danger"); // To handle the color of the alert
   const [duplicates, setDuplicates] = useState([]); // State to hold duplicates
   const [totalDuplicatesSkipped, setTotalDuplicatesSkipped] = useState(0); // State for total duplicates skipped
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   // Handle file selection
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    const validFiles = selectedFiles.filter(file =>
-      file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
-      file.type === 'application/vnd.ms-excel'
+    const validFiles = selectedFiles.filter(
+      (file) =>
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        file.type === "application/vnd.ms-excel"
     );
 
     if (validFiles.length !== selectedFiles.length) {
-      setMessage('Please select only valid Excel files (.xlsx or .xls)');
-      setVariant('danger');
+      setMessage("Please select only valid Excel files (.xlsx or .xls)");
+      setVariant("danger");
       setFiles([]);
       setDuplicates([]);
       setTotalDuplicatesSkipped(0);
     } else {
       setFiles(validFiles);
-      setMessage('');
+      setMessage("");
       setDuplicates([]);
       setTotalDuplicatesSkipped(0);
     }
@@ -36,31 +37,35 @@ const UploadCandidates = () => {
   // Handle file upload
   const handleUpload = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
-  
+    const token = localStorage.getItem("token");
+
     if (files.length === 0) {
-      setMessage('No files selected');
-      setVariant('danger');
+      setMessage("No files selected");
+      setVariant("danger");
       return;
     }
-  
+
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append('files', file);
+      formData.append("files", file);
     });
-  
+
     setLoading(true);
     try {
-      const response = await axios.post( `${process.env.REACT_APP_API_URL}/trysol/candidates/upload`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        },
-      });
-      console.log(response.data.duplicatesSkipped)
+      const response = await axios.post(
+        "http://13.53.126.195:8080/trysol/candidates/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data.duplicatesSkipped);
       setMessage(response.data.message); // Set the success message
-      setVariant('success');
-  
+      setVariant("success");
+
       // Check if data exists in the response
       if (response.data) {
         setDuplicates(response.data.duplicatesSkipped || []); // Set duplicates or empty array if undefined
@@ -72,13 +77,15 @@ const UploadCandidates = () => {
       }
       setLoading(false);
     } catch (error) {
-      setMessage('Failed to upload files: ' + (error.response?.data?.message || error.message));
-      setVariant('danger');
-      setLoading(false)
+      setMessage(
+        "Failed to upload files: " +
+          (error.response?.data?.message || error.message)
+      );
+      setVariant("danger");
+      setLoading(false);
       console.error(error);
     }
   };
-  
 
   return (
     <Container className="upload-container">
@@ -86,28 +93,40 @@ const UploadCandidates = () => {
       <Form onSubmit={handleUpload} className="upload-form">
         <Form.Group controlId="formFileMultiple" className="mb-3">
           <Form.Label>Select Excel files</Form.Label>
-          <Form.Control 
-            type="file" 
-            accept=".xlsx,.xls" 
-            onChange={handleFileChange} 
-            multiple 
+          <Form.Control
+            type="file"
+            accept=".xlsx,.xls"
+            onChange={handleFileChange}
+            multiple
           />
         </Form.Group>
-        <Button 
-          variant="success" 
-          type="submit" 
+        <Button
+          variant="success"
+          type="submit"
           disabled={loading}
-          style={loading ? { cursor: 'not-allowed' } : {}}
+          style={loading ? { cursor: "not-allowed" } : {}}
         >
           {loading ? (
             <>
-              <Spinner animation="border" role="status" size="sm" className="me-2" />
+              <Spinner
+                animation="border"
+                role="status"
+                size="sm"
+                className="me-2"
+              />
               Uploading..
             </>
-          ) : "Upload"} 
-        </Button>
+          ) : (
+            "Upload"
+          )}
+                 
+        </Button>
       </Form>
-      {message && <Alert variant={variant} className="mt-3">{message}</Alert>}
+      {message && (
+        <Alert variant={variant} className="mt-3">
+          {message}
+        </Alert>
+      )}
       {totalDuplicatesSkipped > 0 && (
         <Alert variant="warning" className="mt-3">
           <h5>{totalDuplicatesSkipped} Duplicates Skipped:</h5>
