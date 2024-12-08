@@ -7,16 +7,16 @@ const AuditTable = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [pageSize, setPageSize] = useState(10); // State for page size
-  const [sortOrder, setSortOrder] = useState('ASC'); // State for sort order
+  const [pageSize, setPageSize] = useState(10); 
+  const [sortOrder, setSortOrder] = useState('ASC'); 
 
   useEffect(() => {
     fetchAudits(currentPage, pageSize, sortOrder);
   }, [currentPage, pageSize, sortOrder]);
 
   const fetchAudits = async (page, size, order) => {
-    try {
-      const response = await axios.get( "http://13.53.126.195:8080/trysol/candidates/audits?page=${page}&size=${size}&sortBy=uploadDateTime&direction=${order}", {
+    try{
+      const response = await axios.get( "https://13.53.126.195:8080/trysol/candidates/audits?page=${page}&size=${size}&sortBy=uploadDateTime&direction=${order}", {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem("token")}`
         }
@@ -36,12 +36,12 @@ const AuditTable = () => {
 
   const handlePageSizeChange = (size) => {
     setPageSize(size);
-    setCurrentPage(0); // Reset to the first page whenever page size changes
+    setCurrentPage(0); 
   };
 
   const handleSortOrderChange = (order) => {
     setSortOrder(order);
-    setCurrentPage(0); // Reset to the first page whenever sort order changes
+    setCurrentPage(0); 
   };
 
   if (loading) {
@@ -67,7 +67,6 @@ const AuditTable = () => {
         </Dropdown.Menu>
       </Dropdown>
 
-      {/* Sort Order Buttons */}
       <div className="mb-3">
         <Button variant={sortOrder === 'ASC' ? 'primary' : 'secondary'} onClick={() => handleSortOrderChange('ASC')}>
           Sort Ascending

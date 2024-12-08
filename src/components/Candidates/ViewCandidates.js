@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import * as XLSX from 'xlsx';
-import './ViewCandidates.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import * as XLSX from "xlsx";
+import "./ViewCandidates.css";
 
 const ViewCandidates = () => {
   const [data, setData] = useState([]);
@@ -9,19 +9,19 @@ const ViewCandidates = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [filters, setFilters] = useState({
-    name: '',
-    skill: '',
-    subSkill: '',
-    location: '',
-    minTotalExp: '',
-    maxTotalExp: '',
-    minRelExp: '',
-    maxRelExp: '',
+    name: "",
+    skill: "",
+    subSkill: "",
+    location: "",
+    minTotalExp: "",
+    maxTotalExp: "",
+    minRelExp: "",
+    maxRelExp: "",
   });
   const [selectedEmails, setSelectedEmails] = useState([]);
 
   const fetchData = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     try {
       const params = {
         page,
@@ -31,13 +31,16 @@ const ViewCandidates = () => {
         ),
       };
 
-      const response = await axios.get( "http://13.53.126.195:8080/trysol/candidates", { 
-        params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const response = await axios.get(
+        "https://3.94.171.108:8080/trysol/candidates",
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
       setData(response.data.content);
       setTotalRecords(response.data.totalElements);
     } catch (error) {
@@ -67,7 +70,7 @@ const ViewCandidates = () => {
 
   const handleMassMailing = () => {
     if (selectedEmails.length > 0) {
-      const mailtoLink = `mailto:?bcc=${selectedEmails.join(',')}`; // Change cc to bcc
+      const mailtoLink = `mailto:?bcc=${selectedEmails.join(",")}`; // Change cc to bcc
       window.location.href = mailtoLink;
     } else {
       alert("Please select at least one candidate to email.");
@@ -79,12 +82,12 @@ const ViewCandidates = () => {
       alert("Please select at least one candidate to download.");
       return;
     }
-  
-    const selectedCandidates = data.filter(candidate =>
+
+    const selectedCandidates = data.filter((candidate) =>
       selectedEmails.includes(candidate.mailId)
     );
-  
-    const formattedData = selectedCandidates.map(candidate => ({
+
+    const formattedData = selectedCandidates.map((candidate) => ({
       ID: candidate.id,
       Name: candidate.name,
       Email: candidate.mailId,
@@ -96,10 +99,10 @@ const ViewCandidates = () => {
       RelevantExperience: candidate.relevantExperience,
       NoticePeriod: candidate.noticePeriod,
     }));
-  
+
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
     const workbook = XLSX.utils.book_new();
-  
+
     const columnHeaders = [
       { header: "ID", minWidth: 12 },
       { header: "Name", minWidth: 20 },
@@ -112,28 +115,30 @@ const ViewCandidates = () => {
       { header: "RelevantExperience", minWidth: 15 },
       { header: "Notice Period", minWidth: 15 },
     ];
-  
-    worksheet['!cols'] = columnHeaders.map((col) => {
+
+    worksheet["!cols"] = columnHeaders.map((col) => {
       const maxLength = Math.max(
-        ...formattedData.map(row => (row[col.header]?.toString().length || 0) + 2)
+        ...formattedData.map(
+          (row) => (row[col.header]?.toString().length || 0) + 2
+        )
       );
       return { wch: Math.max(col.minWidth, maxLength) };
     });
-  
+
     XLSX.utils.book_append_sheet(workbook, worksheet, "Candidates");
     XLSX.writeFile(workbook, "Selected_Candidates.xlsx");
   };
 
   const handleResetFilters = () => {
     setFilters({
-      name: '',
-      skill: '',
-      subSkill: '',
-      location: '',
-      minTotalExp: '',
-      maxTotalExp: '',
-      minRelExp: '',
-      maxRelExp: '',
+      name: "",
+      skill: "",
+      subSkill: "",
+      location: "",
+      minTotalExp: "",
+      maxTotalExp: "",
+      minRelExp: "",
+      maxRelExp: "",
     });
     setPage(0); // Reset to page 1
     setSelectedEmails([]); // Clear selected emails
@@ -152,17 +157,67 @@ const ViewCandidates = () => {
       <h2>Search Candidates</h2>
 
       <div className="filters">
-        <input type="text" name="name" placeholder="Name" value={filters.name} onChange={handleFilterChange} />
-        <input type="text" name="skill" placeholder="Skill" value={filters.skill} onChange={handleFilterChange} />
-        <input type="text" name="subSkill" placeholder="Sub Skill" value={filters.subSkill} onChange={handleFilterChange} />
-        <input type="text" name="location" placeholder="Location" value={filters.location} onChange={handleFilterChange} />
-        <input type="number" name="minTotalExp" placeholder="Min Total Exp" value={filters.minTotalExp} onChange={handleFilterChange} />
-        <input type="number" name="maxTotalExp" placeholder="Max Total Exp" value={filters.maxTotalExp} onChange={handleFilterChange} />
-        <input type="number" name="minRelExp" placeholder="Min Rel Exp" value={filters.minRelExp} onChange={handleFilterChange} />
-        <input type="number" name="maxRelExp" placeholder="Max Rel Exp" value={filters.maxRelExp} onChange={handleFilterChange} />
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={filters.name}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="skill"
+          placeholder="Skill"
+          value={filters.skill}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="subSkill"
+          placeholder="Sub Skill"
+          value={filters.subSkill}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={filters.location}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="number"
+          name="minTotalExp"
+          placeholder="Min Total Exp"
+          value={filters.minTotalExp}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="number"
+          name="maxTotalExp"
+          placeholder="Max Total Exp"
+          value={filters.maxTotalExp}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="number"
+          name="minRelExp"
+          placeholder="Min Rel Exp"
+          value={filters.minRelExp}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="number"
+          name="maxRelExp"
+          placeholder="Max Rel Exp"
+          value={filters.maxRelExp}
+          onChange={handleFilterChange}
+        />
       </div>
 
-      <button onClick={handleResetFilters} className="reset-button">Reset Filters</button>
+      <button onClick={handleResetFilters} className="reset-button">
+        Reset Filters
+      </button>
 
       <table>
         <thead>
@@ -212,7 +267,10 @@ const ViewCandidates = () => {
           Previous
         </button>
         <span>Page {page + 1}</span>
-        <button onClick={() => setPage(page + 1)} disabled={(page + 1) * pageSize >= totalRecords}>
+        <button
+          onClick={() => setPage(page + 1)}
+          disabled={(page + 1) * pageSize >= totalRecords}
+        >
           Next
         </button>
       </div>

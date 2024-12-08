@@ -22,7 +22,7 @@ const EmployeeTable = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://13.53.126.195:8080/trysol/employees",
+        "https://3.94.171.108:8080/trysol/employees",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ const EmployeeTable = () => {
   const handleActivateDeactivate = async (employeeId, isActive) => {
     try {
       const token = localStorage.getItem("token");
-      const url = `http://13.53.126.195:8080/trysol/employees/${employeeId}`;
+      const url = `https://3.94.171.108:8080/trysol/employees/${employeeId}`;
 
       if (isActive) {
         await axios.delete(`${url}/deactivate`, {
@@ -86,7 +86,7 @@ const EmployeeTable = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://13.53.126.195:8080/trysol/employees",
+        "https://3.94.171.108:8080/trysol/employees",
         {
           firstName,
           lastName,

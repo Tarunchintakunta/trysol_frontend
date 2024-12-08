@@ -53,7 +53,7 @@ const UploadCandidates = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://13.53.126.195:8080/trysol/candidates/upload",
+        "https://3.94.171.108:8080/trysol/candidates/upload",
         formData,
         {
           headers: {
